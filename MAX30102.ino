@@ -13,8 +13,6 @@ void beep_10ms(){
 
 void max30102_begin() {
   Serial.println("Max30102System Start");
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //Start the OLED display
-  display.display();
   delay(3000);
   pinMode(beep_pin, OUTPUT);
   //檢查
@@ -42,33 +40,8 @@ void max30102_run() {
   long irValue = particleSensor.getIR();    //Reading the IR value it will permit us to know if there's a finger on the sensor or not
   //是否有放手指
   if (irValue > FINGER_ON ) {
-    display.clearDisplay();//清除螢幕
-    display.drawBitmap(5, 5, logo2_bmp, 24, 21, WHITE);//顯示小的心跳圖示
-    display.setTextSize(2);//設定文字大小
-    display.setTextColor(WHITE);//文字顏色
-    display.setCursor(42, 10);//設定游標位置
-    display.print(beatAvg); display.println(" BPM");//顯示心跳數值
-    display.drawBitmap(0, 35, O2_bmp, 32, 32, WHITE);//顯示氧氣圖示
-    display.setCursor(42, 40);//設定游標位置
-    
-    //顯示血氧數值
-    if (beatAvg > 30) display.print(String(ESpO2) + "%");
-    else display.print("---- %" );
-    display.display();//顯示螢幕
     //是否有心跳
     if (checkForBeat(irValue) == true) {
-      display.clearDisplay();//清除螢幕
-      display.drawBitmap(0, 0, logo3_bmp, 32, 32, WHITE);//顯示大的心跳圖示
-      display.setTextSize(2);//設定文字大小
-      display.setTextColor(WHITE);//文字顏色
-      display.setCursor(42, 10);//設定游標位置
-      display.print(beatAvg); display.println(" BPM");//顯示心跳數值
-      display.drawBitmap(0, 35, O2_bmp, 32, 32, WHITE);//顯示氧氣圖示
-      display.setCursor(42, 40);//設定游標位置
-      //顯示血氧數值
-      if (beatAvg > 30) display.print(String(ESpO2) + "%");
-      else display.print("---- %" );
-      display.display();//顯示螢幕
       beep_10ms();
       Serial.print("beatAvg="); Serial.println(beatAvg);//將心跳顯示到序列
       long delta = millis() - lastBeat;//計算心跳差
@@ -127,15 +100,5 @@ void max30102_run() {
     //清除血氧數據
     avered = 0; aveir = 0; sumirrms = 0; sumredrms = 0;
     SpO2 = 0; ESpO2 = 90.0;
-    //顯示Finger Please
-    display.clearDisplay();
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(30, 5);
-    display.println("Finger");
-    display.setCursor(30, 35);
-    display.println("Please");
-    display.display();
-    //    noTone(Tonepin);
   }
 }
