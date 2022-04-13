@@ -75,8 +75,8 @@ int Num = 30;//取樣100次才計算1次
 #include <addons/TokenHelper.h>
 
 /* 1. Define the WiFi credentials */
-#define WIFI_SSID "OpenWrt"
-#define WIFI_PASSWORD "08041218"
+#define WIFI_SSID "WIFISSID"
+#define WIFI_PASSWORD "PASSWORD"
 
 //For the following credentials, see examples/Authentications/SignInAsUser/EmailPassword/EmailPassword.ino
 
@@ -158,6 +158,7 @@ void loop()
   if (Firebase.ready() && (datacount > datacount_max))
     //if (Firebase.ready() && (millis() - dataMillis > 60000 || dataMillis == 0))
   {
+      timeClient.forceUpdate();
     datacount = 0;
 
       digitalWrite(beep_pin, HIGH);
